@@ -35,14 +35,15 @@ if __name__ == '__main__':
 
     last_date = None
 
-    loaded_users = False
-    while not loaded_users:
+    while True:
         response = hipchat.get_users_list()
-        if response['status'] != 200:
+        if response['status'] == 200:
+            users = response['data']['users']
+            break
+        else:
             sleep(5)
             continue
-        loaded_users = True
-        users = response['data']['users']
+
     reviewers = {}
     for user in users:
         user_id = user['user_id']
