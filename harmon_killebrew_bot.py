@@ -11,26 +11,29 @@ from pprint import pprint
 from time import sleep
 
 if __name__ == '__main__':
-    parser = OptionParser(usage='usage: %prog <path to mixpanel-platform lib> (e.g. /home/username/mixpanel-platform)')
-    (options, args) = parser.parse_args()
-    if len(args) != 1:
-        parser.print_help()
-        exit(1)
-
-    reviewer_ids = set([
-        1355590,  # Ilya Kamens
-    ])
-
-    hipchat = Hipster('')
-    room_id = 0000000
-    last_date = None
-
     stopped = False
+
     def terminate(signum, frame):
         global stopped
         stopped = True
     signal.signal(signal.SIGTERM, terminate)
     signal.signal(signal.SIGINT, terminate)
+
+    parser = OptionParser(usage='usage: %prog <path to mixpanel-platform lib> (e.g. /home/username/mixpanel-platform)')
+    (options, args) = parser.parse_args()
+
+    if len(args) != 2:
+        parser.print_help()
+        exit(1)
+
+    hipchat = Hipster(args[0])
+    room_id = args[1]
+
+    reviewer_ids = set([
+        1355590,  # Ilya Kamens
+    ])
+
+    last_date = None
 
     loaded_users = False
     while not loaded_users:
@@ -45,7 +48,6 @@ if __name__ == '__main__':
         user_id = user['user_id']
         if user_id in reviewer_ids:
             reviewers[user_id] = user
-
 
     hipchat.send_messages(room_id=room_id, message='review_bot activated', sender='review_bot')
 
