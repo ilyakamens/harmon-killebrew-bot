@@ -19,7 +19,7 @@ if __name__ == '__main__':
     signal.signal(signal.SIGTERM, terminate)
     signal.signal(signal.SIGINT, terminate)
 
-    parser = OptionParser(usage='usage: %prog <path to mixpanel-platform lib> (e.g. /home/username/mixpanel-platform)')
+    parser = OptionParser(usage='usage: %prog <api_token> <room_id>')
     (options, args) = parser.parse_args()
 
     if len(args) != 2:
@@ -32,8 +32,6 @@ if __name__ == '__main__':
     player_ids = set([
         1355590,  # Ilya Kamens
     ])
-
-    last_date = None
 
     while True:
         response = hipchat.get_users_list()
@@ -51,6 +49,7 @@ if __name__ == '__main__':
             players[user_id] = user
 
     hipchat.send_messages(room_id=room_id, message='review_bot activated', sender='review_bot')
+    last_date = None
 
     while not stopped:
         try:
