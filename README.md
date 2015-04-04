@@ -13,7 +13,7 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 - [Hipster](https://github.com/a2design-inc/hipster)
 - MySQL
 - MySQLdb
-- A JSON config
+- populating config.json with real data
 
 ## Installation
 1. `git clone git@github.com:ilyakamens/harmon-killebrew-bot.git`
