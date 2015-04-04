@@ -80,7 +80,8 @@ if __name__ == '__main__':
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
 
-    # say hi to chat!
+    # say hi to chat! kind of shitty, but this needs to be here
+    # so the bot doesn't ignore the first message
     send_message('killebrew_bot activated :)')
 
     last_date = None
