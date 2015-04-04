@@ -45,12 +45,12 @@ def add_word(celeb, said_by):
         next_player_index = (player_list.index(said_by) + order) % len(player_list)
         global current_player
         current_player = player_list[next_player_index]
-        send_message('%sNew entry # %s! %s said by %s on %s. Next player is @%s.' % (dubdub_text,
-                                                                                     result,
-                                                                                     celeb,
-                                                                                     said_by,
-                                                                                     str(date.today()),
-                                                                                     player_map[current_player]['mention_name']))
+        send_message('%s"%s" said by %s on %s. Next player is @%s!' % (dubdub_text,
+                                                                       result,
+                                                                       celeb,
+                                                                       said_by,
+                                                                       str(date.today()),
+                                                                       player_map[current_player]['mention_name']))
 
 def send_message(text):
     hipchat.send_messages(room_id=room_id, message=text, sender='killebrew_bot')
