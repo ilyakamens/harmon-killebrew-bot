@@ -26,7 +26,7 @@ def add_word(celeb, said_by):
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO `names` (`celeb`, `said_by`, `date_said`) VALUES (%s, %s, %s)"
-            result = cursor.execute(sql, (celeb, said_by, str(date.today())))
+            cursor.execute(sql, (celeb, said_by, str(date.today())))
 
         connection.commit()
     except Exception as e:
@@ -46,14 +46,13 @@ def add_word(celeb, said_by):
         global current_player
         current_player = player_list[next_player_index]
         send_message('%s"%s" said by %s on %s. Next player is @%s!' % (dubdub_text,
-                                                                       result,
                                                                        celeb,
                                                                        said_by,
                                                                        str(date.today()),
                                                                        player_map[current_player]['mention_name']))
 
 def send_message(text):
-    hipchat.send_messages(room_id=room_id, message=text, sender='killebrew_bot')
+    hipchat.send_messages(room_id=room_id, message=text, message_format='text', sender='killebrew_bot')
 
 if __name__ == '__main__':
     # get arguments
