@@ -9,7 +9,6 @@ import traceback
 
 from datetime import date
 from hipster import Hipster
-from optparse import OptionParser
 from pprint import pprint
 from time import sleep
 
@@ -57,21 +56,12 @@ def send_message(text):
     hipchat.send_messages(room_id=room_id, message=text, message_format='text', sender='killebrew_bot')
 
 if __name__ == '__main__':
-    # get arguments
-    parser = OptionParser(usage='usage: %prog <config_file.json>')
-    (options, args) = parser.parse_args()
-
-    # make sure we get the right number of args
-    if len(args) != 1:
-        parser.print_help()
-        exit(1)
-
     # load json config
     try:
-        with open(args[0]) as json_config:
+        with open('config.json') as json_config:
             config = json.load(json_config)
     except Exception:
-        sys.exit('Failed to open config file: %s' % args[0])
+        sys.exit('Failed to open config.json')
     else:
         db_name = config['db_name']
         table_name = config['table_name']
