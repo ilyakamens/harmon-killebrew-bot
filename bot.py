@@ -45,12 +45,12 @@ def add_word(celeb, said_by):
         next_player_index = (player_list.index(said_by) + order) % len(player_list)
         global current_player
         current_player = player_list[next_player_index]
-        send_message('%sNew entry # %s! %s said by %s on %s. Next player is %s.' % (dubdub_text,
-                                                                                    result,
-                                                                                    celeb,
-                                                                                    said_by,
-                                                                                    str(date.today()),
-                                                                                    player_map[current_player]['mention_name']))
+        send_message('%sNew entry # %s! %s said by %s on %s. Next player is @%s.' % (dubdub_text,
+                                                                                     result,
+                                                                                     celeb,
+                                                                                     said_by,
+                                                                                     str(date.today()),
+                                                                                     player_map[current_player]['mention_name']))
 
 def send_message(text):
     hipchat.send_messages(room_id=room_id, message=text, sender='killebrew_bot')
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                         send_message('Order reversed')
                     elif 'set current player:' in message_text and said_by == 'Ilya Kamens':
                         current_player = string.capwords(message_text.replace('set current player:', '').strip())
-                        send_message('Current player is %s' % player_map[current_player]['mention_name'])
+                        send_message('Current player is @%s' % player_map[current_player]['mention_name'])
 
             last_date = message['date']
         except:
