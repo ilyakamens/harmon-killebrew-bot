@@ -15,7 +15,7 @@ def terminate(signum, frame):
     global stopped
     stopped = True
     connection.close()
-    hipchat.send_messages(room_id=room_id, message="killebrew_bot deactivated :(", sender='killebrew_bot')
+    hipchat.send_messages(room_id=room_id, message="killebrew_bot deactivated :(", sender=bot_name)
 signal.signal(signal.SIGTERM, terminate)
 signal.signal(signal.SIGINT, terminate)
 
@@ -75,7 +75,8 @@ if __name__ == '__main__':
                                  cursorclass=pymysql.cursors.DictCursor)
 
     # say hi to chat!
-    hipchat.send_messages(room_id=room_id, message='killebrew_bot activated :)', sender='killebrew_bot')
+    bot_name = 'killebre_bot'
+    hipchat.send_messages(room_id=room_id, message='killebrew_bot activated :)', sender=bot_name)
 
     last_date = None
     stopped = False
@@ -89,13 +90,13 @@ if __name__ == '__main__':
                         celeb = message_text.replace('(upvote)', '').strip()
                         result = add_word(celeb, message['from']['name'])
                         if result == '1062':
-                            hipchat.send_messages(room_id=room_id, message='No!', sender='killebrew_bot')
+                            hipchat.send_messages(room_id=room_id, message='No!', sender=bot_name)
                         elif isinstance(result, basestring):
-                            hipchat.send_messages(room_id=room_id, message='Error: %s' % result, sender='killebrew_bot')
+                            hipchat.send_messages(room_id=room_id, message='Error: %s' % result, sender=bot_name)
                         else:
-                            hipchat.send_messages(room_id=room_id, message='New entry # %s!' % (result), sender='killebrew_bot')
+                            hipchat.send_messages(room_id=room_id, message='New entry # %s!' % (result), sender=bot_name)
                     elif message_text == 'what is my user id?':
-                        hipchat.send_messages(room_id=room_id, message=message['from']['user_id'], message_format='text', sender='killebrew_bot')
+                        hipchat.send_messages(room_id=room_id, message=message['from']['user_id'], message_format='text', sender=bot_name)
             last_date = message['date']
         except:
             if 'messages' in locals():
