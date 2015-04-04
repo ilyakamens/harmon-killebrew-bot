@@ -22,4 +22,4 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 4. `sudo ./install.sh`
 
 ## Usage
-`python bot.py config.json`
+`python bot.py`
