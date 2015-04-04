@@ -12,7 +12,14 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 - [PyMySql](https://github.com/PyMySQL/PyMySQL)
 - [Hipster](https://github.com/a2design-inc/hipster)
 - MySQL
+- MySQLdb
 - A JSON config
 
+## Installation
+1. `git clone git@github.com:ilyakamens/harmon-killebrew-bot.git`
+2. put real data into config.json
+3. `cd harmon-killebrew-bot`
+4. `sudo ./install.sh`
+
 ## Usage
-`python ~/path/to/bot.py <config_file.json>`
+`python bot.py config.json`
