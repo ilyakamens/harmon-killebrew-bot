@@ -1,0 +1,17 @@
+{
+    "db_name":    "mp_hk",
+    "table_name": "celebs",
+    "player_list": [
+        "Ilya Kamens",
+        "Laura Kim",
+        "Christine Del Beccaro",
+        "Austin Rycroft",
+        "Diggory Quarles",
+        "Meredith Misra",
+        "Rahul McFarland",
+        "Jared Callan"
+    ],
+    "super_user": "Ilya Kamens",
+    "api_key": "b47caadf63b7324c5b63853d9d7643",
+    "room_id": "123456"
+}
