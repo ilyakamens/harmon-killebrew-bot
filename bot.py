@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+import json
 import pymysql.cursors
 import signal
+import string
+import sys
 import traceback
 
 from datetime import date
@@ -32,29 +35,45 @@ def add_word(celeb, said_by):
         else:
             send_message('Error %s: %s' % (e.args[0], e.args[1]))
     else:
-        send_message('New entry # %s! %s said by %s on %s' % (result, celeb, said_by, str(date.today())))
+        split = celeb.split(' ', 1)
+        dubdub_text = ''
+        if len(split) > 1 and split[0][0] == split[1][0]:
+            global order
+            order = -order
+            dubdub_text = 'DUB DUB! '
+
+        next_player_index = (player_list.index(said_by) + order) % len(player_list)
+        global current_player
+        current_player = player_list[next_player_index]
+        send_message('%sNew entry # %s! %s said by %s on %s. Next player is %s.' % (dubdub_text,
+                                                                                    result,
+                                                                                    celeb,
+                                                                                    said_by,
+                                                                                    str(date.today()),
+                                                                                    player_map[current_player]['mention_name']))
 
 def send_message(text):
     hipchat.send_messages(room_id=room_id, message=text, sender='killebrew_bot')
 
 if __name__ == '__main__':
     # get arguments
-    parser = OptionParser(usage='usage: %prog <api_token> <room_id> <database>')
+    parser = OptionParser(usage='usage: %prog <api_token> <room_id> <database> <userlist.json>')
     (options, args) = parser.parse_args()
 
     # make sure we get the right number of args
-    if len(args) != 3:
+    if len(args) != 4:
         parser.print_help()
         exit(1)
 
     hipchat = Hipster(args[0])
     room_id = args[1]
 
-    player_ids = set([
-        1355590, # Ilya Kamens
-        1022218, # Diggory Rycroft
-        1710903  # Laura Del Beccaro
-    ])
+    # connect to db
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 db=args[2],
+                                 charset='utf8mb4',
+                                 cursorclass=pymysql.cursors.DictCursor)
 
     # get users in hipchat room
     while True:
@@ -66,19 +85,21 @@ if __name__ == '__main__':
             sleep(5)
             continue
 
-    # create user map
-    players = {}
-    for user in users:
-        user_id = user['user_id']
-        if user_id in player_ids:
-            players[user_id] = user
+    # open user list file
+    try:
+        with open(args[3]) as user_list_file:
+            player_list = json.load(user_list_file)
+    except Exception:
+        connection.close()
+        error_message = 'Failed to open user list file: %s' % args[3]
+        send_message(error_message)
+        sys.exit(error_message)
 
-    # connect to db
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 db=args[2],
-                                 charset='utf8mb4',
-                                 cursorclass=pymysql.cursors.DictCursor)
+    # create user map
+    player_map = {}
+    for user in users:
+        if user['name'] in player_list:
+            player_map[user['name']] = user
 
     # say hi to chat! kind of shitty, but this needs to be here
     # so the bot doesn't ignore the first message
@@ -86,18 +107,25 @@ if __name__ == '__main__':
 
     last_date = None
     stopped = False
+    order = 1
+    current_player = None
     while not stopped:
         try:
             messages = hipchat.get_messages(room_id=room_id, date='recent')
             for message in messages['data']['messages']:
                 if last_date is not None and message['date'] > last_date:
                     message_text = message['message'].lower()
-                    if '(upvote)' in message_text:
+                    said_by = message['from']['name']
+                    if '(upvote)' in message_text and current_player == said_by:
                         celeb = message_text.replace('(upvote)', '').strip()
-                        said_by = message['from']['name']
                         add_word(celeb, said_by)
-                    elif message_text == 'id please':
-                        send_message(str(message['from']['user_id']))
+                    elif message_text == 'reverse order' and said_by == 'Ilya Kamens':
+                        order = -order
+                        send_message('Order reversed')
+                    elif 'set current player:' in message_text and said_by == 'Ilya Kamens':
+                        current_player = string.capwords(message_text.replace('set current player:', '').strip())
+                        send_message('Current player is %s' % player_map[current_player]['mention_name'])
+
             last_date = message['date']
         except:
             if 'messages' in locals():
