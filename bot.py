@@ -66,6 +66,7 @@ if __name__ == '__main__':
         parser.print_help()
         exit(1)
 
+    # load json config
     try:
         with open(args[0]) as json_config:
             config = json.load(json_config)
