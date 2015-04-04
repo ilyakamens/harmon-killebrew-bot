@@ -29,7 +29,7 @@ if __name__ == '__main__':
     hipchat = Hipster(args[0])
     room_id = args[1]
 
-    reviewer_ids = set([
+    player_ids = set([
         1355590,  # Ilya Kamens
     ])
 
@@ -44,11 +44,11 @@ if __name__ == '__main__':
             sleep(5)
             continue
 
-    reviewers = {}
+    players = {}
     for user in users:
         user_id = user['user_id']
-        if user_id in reviewer_ids:
-            reviewers[user_id] = user
+        if user_id in player_ids:
+            players[user_id] = user
 
     hipchat.send_messages(room_id=room_id, message='review_bot activated', sender='review_bot')
 
@@ -60,8 +60,8 @@ if __name__ == '__main__':
                     message_text = message['message'].lower()
                     matches = re.findall('https://github.com/mixpanel/(?:analytics|mixpanel-\w+)/pull/\d+', message_text)
                     if message['from']['name'] != 'review_bot' and 'review' in message_text and matches:
-                        possibles = reviewer_ids.difference([message['from']['user_id']])
-                        reviewer = reviewers[random.choice(list(possibles))]
+                        possibles = player_ids.difference([message['from']['user_id']])
+                        reviewer = players[random.choice(list(possibles))]
                         if len(matches) == 1:
                             text = '@%s selected to review %s' % (reviewer['mention_name'], matches[0])
                         else:
