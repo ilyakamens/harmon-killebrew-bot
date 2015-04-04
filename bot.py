@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import datetime
 import pymysql.cursors
 import signal
 import traceback
 
+from datetime import date
 from hipster import Hipster
 from optparse import OptionParser
 from pprint import pprint
@@ -23,13 +23,18 @@ def add_word(celeb, said_by):
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO `names` (`celeb`, `said_by`, `date_said`) VALUES (%s, %s, %s)"
-            result = cursor.execute(sql, (celeb, said_by, str(datetime.date.today())))
+            result = cursor.execute(sql, (celeb, said_by, str(date.today())))
 
         connection.commit()
     except Exception as e:
-        result = str(e.args[0])
-
-    return result
+        if str(e.args[0]) == '1062':
+            hipchat.send_messages(room_id=room_id, message='No!', sender=bot_name)
+        else:
+            hipchat.send_messages(room_id=room_id, message='Error %s: %s' % (e.args[0], e.args[1]), sender=bot_name)
+    else:
+        hipchat.send_messages(room_id=room_id,
+                              message='New entry # %s! %s said by %s on %s' % (result, celeb, said_by, str(date.today())),
+                              sender=bot_name)
 
 if __name__ == '__main__':
     # get arguments
@@ -75,7 +80,7 @@ if __name__ == '__main__':
                                  cursorclass=pymysql.cursors.DictCursor)
 
     # say hi to chat!
-    bot_name = 'killebre_bot'
+    bot_name = 'killebrew_bot'
     hipchat.send_messages(room_id=room_id, message='killebrew_bot activated :)', sender=bot_name)
 
     last_date = None
@@ -88,15 +93,10 @@ if __name__ == '__main__':
                     message_text = message['message'].lower()
                     if '(upvote)' in message_text:
                         celeb = message_text.replace('(upvote)', '').strip()
-                        result = add_word(celeb, message['from']['name'])
-                        if result == '1062':
-                            hipchat.send_messages(room_id=room_id, message='No!', sender=bot_name)
-                        elif isinstance(result, basestring):
-                            hipchat.send_messages(room_id=room_id, message='Error: %s' % result, sender=bot_name)
-                        else:
-                            hipchat.send_messages(room_id=room_id, message='New entry # %s!' % (result), sender=bot_name)
-                    elif message_text == 'what is my user id?':
-                        hipchat.send_messages(room_id=room_id, message=message['from']['user_id'], message_format='text', sender=bot_name)
+                        said_by = message['from']['name']
+                        add_word(celeb, said_by)
+                    elif message_text == 'id please':
+                        hipchat.send_messages(room_id=room_id, message=str(message['from']['user_id']), sender=bot_name)
             last_date = message['date']
         except:
             if 'messages' in locals():
