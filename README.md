@@ -11,8 +11,8 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 ## Requirements
 - [PyMySql](https://github.com/PyMySQL/PyMySQL)
 - [Hipster](https://github.com/a2design-inc/hipster)
-- A local MySQL DB
-- A file containing a JSON list of players in the room
+- MySQL
+- A JSON config
 
 ## Usage
-`python ~/path/to/bot.py <api_token> <room_id> <db_name> <user_list_file>`
+`python ~/path/to/bot.py <config_file.json>`
