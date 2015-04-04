@@ -6,7 +6,7 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 - it will reject previously used submissions
 - it will choose the next person in the list and @mention them
 - it recognizes same first-letter names and will reverse the order
-- it currently stores the celebrity name, who the celebrity was said by, and the date it was said
+- it currently stores the celebrity name, as well as the author and date of the submission
 
 ## Requirements
 - [PyMySql](https://github.com/PyMySQL/PyMySQL)
