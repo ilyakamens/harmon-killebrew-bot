@@ -14,4 +14,4 @@ git clone https://github.com/a2design-company/hipster
 cd hipster
 python setup.py install
 
-python set_up_db.py config.json
+python set_up_db.py
