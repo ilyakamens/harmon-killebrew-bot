@@ -15,7 +15,7 @@ def terminate(signum, frame):
     global stopped
     stopped = True
     connection.close()
-    hipchat.send_messages(room_id=room_id, message="killebrew_bot deactivated :(", sender=bot_name)
+    send_message('killebrew_bot deactivated :(')
 signal.signal(signal.SIGTERM, terminate)
 signal.signal(signal.SIGINT, terminate)
 
@@ -28,13 +28,14 @@ def add_word(celeb, said_by):
         connection.commit()
     except Exception as e:
         if str(e.args[0]) == '1062':
-            hipchat.send_messages(room_id=room_id, message='No!', sender=bot_name)
+            send_message('No!')
         else:
-            hipchat.send_messages(room_id=room_id, message='Error %s: %s' % (e.args[0], e.args[1]), sender=bot_name)
+            send_message('Error %s: %s' % (e.args[0], e.args[1]))
     else:
-        hipchat.send_messages(room_id=room_id,
-                              message='New entry # %s! %s said by %s on %s' % (result, celeb, said_by, str(date.today())),
-                              sender=bot_name)
+        send_message('New entry # %s! %s said by %s on %s' % (result, celeb, said_by, str(date.today())))
+
+def send_message(text):
+    hipchat.send_messages(room_id=room_id, message=text, sender='killebrew_bot')
 
 if __name__ == '__main__':
     # get arguments
@@ -80,8 +81,7 @@ if __name__ == '__main__':
                                  cursorclass=pymysql.cursors.DictCursor)
 
     # say hi to chat!
-    bot_name = 'killebrew_bot'
-    hipchat.send_messages(room_id=room_id, message='killebrew_bot activated :)', sender=bot_name)
+    send_message('killebrew_bot activated :)')
 
     last_date = None
     stopped = False
@@ -96,7 +96,7 @@ if __name__ == '__main__':
                         said_by = message['from']['name']
                         add_word(celeb, said_by)
                     elif message_text == 'id please':
-                        hipchat.send_messages(room_id=room_id, message=str(message['from']['user_id']), sender=bot_name)
+                        send_message(str(message['from']['user_id']))
             last_date = message['date']
         except:
             if 'messages' in locals():
