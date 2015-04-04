@@ -48,7 +48,7 @@ if __name__ == '__main__':
         if user_id in player_ids:
             players[user_id] = user
 
-    hipchat.send_messages(room_id=room_id, message='review_bot activated', sender='review_bot')
+    hipchat.send_messages(room_id=room_id, message='killebrew_bot activated', sender='killebrew_bot')
     last_date = None
 
     while not stopped:
@@ -75,4 +75,4 @@ if __name__ == '__main__':
             print traceback.format_exc()
         sleep(5)
 
-    hipchat.send_messages(room_id=room_id, message='review_bot deactivated', sender='review_bot')
+    hipchat.send_messages(room_id=room_id, message="killebrew_bot deactivated", sender='killebrew_bot')
