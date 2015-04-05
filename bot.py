@@ -24,8 +24,7 @@ def add_word(celeb, author):
     try:
         with connection.cursor() as cursor:
             # sql statement needs to be broken out, otherwise it breaks due to dynamic table name
-            sql = "INSERT INTO `%s` " % table_name
-            sql += "(`celeb`, `author`, `authored`) VALUES (%s, %s, %s)"
+            sql = ''.join(["INSERT INTO `%s` " % table_name, "(`celeb`, `author`, `authored`) VALUES (%s, %s, %s)"])
             cursor.execute(sql, (celeb, author, str(date.today())))
 
         connection.commit()
