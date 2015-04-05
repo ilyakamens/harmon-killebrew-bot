@@ -1,5 +1,5 @@
 # harmon-killebrew-bot
-A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://localwiki.org/davis/Harmon_Killebrew) in HipChat
+A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://localwiki.org/davis/Harmon_Killebrew){:target="_blank"} in HipChat
 
 ## Description
 - harmon-killebrew-bot will listen to HipChat messages and write celebrity names to a MySQL DB
