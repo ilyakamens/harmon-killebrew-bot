@@ -1,7 +1,7 @@
 # harmon-killebrew-bot
 A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://localwiki.org/davis/Harmon_Killebrew) in HipChat
 
-# Description
+## Description
 - harmon-killebrew-bot will listen to HipChat messages and write celebrity names to a MySQL DB
 - it will reject previously used submissions
 - it will choose the next person in the list and @mention them
@@ -29,7 +29,7 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 - `reverse order` (switches the order the bot chooses players in)
 - `set current player: full_name` (sets full_name [e.g. Ilya Kamens] to be the current player)
 
-# Reotractive importing
+## Reotractive importing
 Maybe you've been playing this game for a bit and want an easy way to add a list of names to the DB that have already been used. No problem:
 - create a file with one name per line (e.g. `names.txt`)
 - `python import.py names.txt`
