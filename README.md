@@ -28,3 +28,9 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 `config.json` specifies a super user, who has two commands at his/her disposal when written into the chat:
 - `reverse order` (switches the order the bot chooses players in)
 - `set current player: full_name` (sets full_name [e.g. Ilya Kamens] to be the current player)
+
+# Reotractive importing
+Maybe you've been playing this game for a bit and want an easy way to add a list of names to the DB that have already been used. No problem:
+- create a file with one name per line (e.g. `names.txt`)
+- `python import.py names.txt`
+- if you do this, know that the `author` will be `IMPORT` and `authored` will be the current date
