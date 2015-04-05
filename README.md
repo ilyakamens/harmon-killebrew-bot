@@ -13,7 +13,7 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 - [Hipster](https://github.com/a2design-inc/hipster)
 - MySQL
 - MySQLdb
-- populating config.json with real data
+- populating `config.json` with real data
 
 ## Installation (Ubuntu)
 1. `git clone git@github.com:ilyakamens/harmon-killebrew-bot.git`
@@ -23,3 +23,8 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 
 ## Usage
 `python bot.py`
+
+## Super user commands
+`config.json` specifies a super user, who has two commands at his/her disposal when written into the chat:
+- `reverse order` (switches the order the bot chooses players in)
+- `set current player: full_name` (sets full_name [e.g. Ilya Kamens] to be the current player)
