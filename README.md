@@ -15,7 +15,7 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 - MySQLdb
 - populating config.json with real data
 
-## Installation
+## Installation (Ubuntu)
 1. `git clone git@github.com:ilyakamens/harmon-killebrew-bot.git`
 2. put real data into config.json
 3. `cd harmon-killebrew-bot`
