@@ -37,8 +37,7 @@ if __name__ == '__main__':
     try:
         with connection.cursor() as cursor:
             # sql statement needs to be broken out, otherwise it breaks due to dynamic table name
-            sql = "INSERT INTO `%s` " % table_name
-            sql += "(`celeb`, `author`, `authored`) VALUES (%s, %s, %s)"
+            sql = ''.join(["INSERT INTO `%s` " % table_name, "(`celeb`, `author`, `authored`) VALUES (%s, %s, %s)"])
             for name in names:
                 cursor.execute(sql, (name, 'IMPORT', str(date.today())))
 
