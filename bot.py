@@ -14,10 +14,9 @@ from time import sleep
 
 # terminate process
 def terminate(signum, frame):
-    global stopped
-    stopped = True
     connection.close()
     send_message('killebrew_bot deactivated :(')
+    sys.exit(0)
 signal.signal(signal.SIGTERM, terminate)
 signal.signal(signal.SIGINT, terminate)
 
@@ -98,10 +97,9 @@ if __name__ == '__main__':
     send_message('killebrew_bot activated :)')
 
     last_date = None
-    stopped = False
     order = 1
     current_player = None
-    while not stopped:
+    while True:
         try:
             messages = hipchat.get_messages(room_id=room_id, date='recent')
             for message in messages['data']['messages']:
