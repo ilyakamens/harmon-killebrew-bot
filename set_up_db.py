@@ -39,8 +39,6 @@ if __name__ == '__main__':
 
         connection.commit()
     except Exception as e:
-        import pdb
-        pdb.set_trace()
         sys.exit('Error creating table')
     finally:
         connection.close()
