@@ -1,5 +1,5 @@
 # harmon-killebrew-bot
-A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://localwiki.org/davis/Harmon_Killebrew){:target="_blank"} in HipChat
+A simple bot for playing <a href="https://localwiki.org/davis/Harmon_Killebrew" target="_blank">Harmon Killebrew (the celebrity name game)</a> in <a href="https://www.hipchat.com/" target="_blank">HipChat</a>
 
 ## Description
 - harmon-killebrew-bot will listen to HipChat messages and write celebrity names to a MySQL DB
@@ -9,10 +9,10 @@ A simple bot for playing [Harmon Killebrew (the celebrity name game)](https://lo
 - it currently stores the celebrity name, as well as the author and date of the submission
 
 ## Requirements
-- [PyMySql](https://github.com/PyMySQL/PyMySQL)
-- [Hipster](https://github.com/a2design-inc/hipster)
-- MySQL
-- MySQLdb
+- <a href="https://github.com/PyMySQL/PyMySQL" target="_blank">PyMySql</a>
+- <a href="https://github.com/a2design-inc/hipster" target="_blank">Hipster</a>
+- <a href="https://www.mysql.com/" target="_blank">MySQL</a>
+- <a href="http://mysql-python.sourceforge.net/" target="_blank">MySQLdb</a>
 - populating `config.json` with real data
 
 ## Installation (Ubuntu)
