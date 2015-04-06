@@ -106,7 +106,8 @@ if __name__ == '__main__':
                     message_text = message['message'].lower()
                     author = message['from']['name']
                     if '(upvote)' in message_text and current_player == author:
-                        celeb = message_text.replace('(upvote)', '').strip()
+                        celeb = message_text.replace('(upvote)', '').strip().split(' ')
+                        celeb = ' '.join([word for word in celeb if '@' not in word])
                         add_word(celeb, author)
                     elif message_text == 'reverse order' and author == super_user:
                         order = -order
