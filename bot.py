@@ -20,6 +20,13 @@ def terminate(signum, frame):
 signal.signal(signal.SIGTERM, terminate)
 signal.signal(signal.SIGINT, terminate)
 
+def get_mysql_connection(db_name):
+    return pymysql.connect(host='localhost',
+                           user='root',
+                           db=db_name,
+                           charset='utf8mb4',
+                           cursorclass=pymysql.cursors.DictCursor)
+
 def add_word(celeb, author):
     try:
         with connection.cursor() as cursor:
@@ -31,6 +38,10 @@ def add_word(celeb, author):
     except Exception as e:
         if str(e.args[0]) == '1062':
             send_message('No!')
+        elif str(e.args[0]) == '2006':
+            global connection
+            connection = get_mysql_connection(db_name)
+            return add_word(celeb, author)
         else:
             send_message('Error %s: %s' % (e.args[0], e.args[1]))
     else:
@@ -69,11 +80,7 @@ if __name__ == '__main__':
         room_id = config['room_id']
 
     # connect to db
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 db=db_name,
-                                 charset='utf8mb4',
-                                 cursorclass=pymysql.cursors.DictCursor)
+    connection = get_mysql_connection(db_name)
 
     # get users in hipchat room
     while True:
