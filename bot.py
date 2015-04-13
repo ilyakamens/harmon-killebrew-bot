@@ -177,7 +177,16 @@ if __name__ == '__main__':
                         current_player = string.capwords(message_text.replace('set current player:', '').strip())
                         send_message('Current player is @%s' % player_map[current_player]['mention_name'])
                     elif '(downvote)' in message_text and author == super_user:
-                        deleted_celeb = string.capwords(message_text.replace('(downvote)', '').strip())
+                        full_deleted_celeb = string.capwords(message_text.replace('(downvote)', '').strip())
+                        deleted_celeb = ' '
+                        i = 0
+                        for letter in full_deleted_celeb:
+                            if letter == deleted_celeb[i]:
+                                pass
+                            else
+                                deleted_celeb += letter
+                                i += 1
+                        deleted_celeb = deleted_celeb[1:]
                         del_word(deleted_celeb)
 
             last_date = message['date']
