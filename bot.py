@@ -61,6 +61,49 @@ def add_word(celeb, author):
                                                                        str(date.today()),
                                                                        player_map[current_player]['mention_name']))
 
+def del_word(celeb):
+    author = None
+    try:
+        with connection.cursor() as cursor:
+            sql1 = ''.join(["SELECT `author` FROM `%s` " % table_name, "WHERE `celeb` = %s"])
+            cursor.execute(sql1, (celeb))
+            row = cursor.fetchone()
+            if (row):
+                author = row[1]
+            else:
+                send_message('%s was never said!' % celeb)
+
+        connection.commit()
+    except Exception as e:
+        if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
+            send_message('%s was never said!' % celeb)
+        elif str(e.args[0]) == '2006':
+            connection = get_mysql_connection(db_name)
+            return del_word(celeb)
+        else:
+            send_message('Error %s: %s' % (e.args[0], e.args[1]))
+    else:
+        try:
+            with connection.cursor() as cursor:
+                sql = ''.join(["DELETE FROM `%s` " % table_name, "WHERE `celeb` = %s"])
+                cursor.execute(sql, (celeb))
+
+            connection.commit()
+        except Exception as e:
+            if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
+                send_message('%s was never said!' % celeb)
+            elif str(e.args[0]) == '2006':
+                connection = get_mysql_connection(db_name)
+                return del_word(celeb)
+            else:
+                send_message('Error %s: %s' % (e.args[0], e.args[1]))
+        else:
+            player_index = player_list.index(author)
+            current_player = player_list[player_index]
+            send_message('%s deleted. @%s is still up!' % (deleted_celeb, 
+                                                           player_map[current_player]['mention_name']))
+
+
 def send_message(text):
     hipchat.send_messages(room_id=room_id, message=text, message_format='text', sender='killebrew_bot')
 
@@ -113,8 +156,19 @@ if __name__ == '__main__':
                     message_text = message['message'].lower()
                     author = message['from']['name']
                     if '(upvote)' in message_text and current_player == author:
-                        celeb = message_text.replace('(upvote)', '').strip().split(' ')
-                        celeb = ' '.join([word for word in celeb if '@' not in word])
+                        full_celeb = message_text.replace('(upvote)', '').strip().split(' ')
+                        full_celeb = ' '.join([word for word in celeb if '@' not in word])
+                        # eliminate double letters so celebrities can be written in 
+                        # an announcer voice (e.g., HARRRMOONNNNN KILLLEBREEWWWWW) :)
+                        celeb = ' '
+                        i = 0
+                        for letter in full_celeb:
+                            if letter == celeb[i]:
+                                pass
+                            else:
+                                celeb += letter
+                                i += 1
+                        celeb = celeb[1:]
                         add_word(celeb, author)
                     elif message_text == 'reverse order' and author == super_user:
                         order = -order
@@ -122,6 +176,9 @@ if __name__ == '__main__':
                     elif 'set current player:' in message_text and author == super_user:
                         current_player = string.capwords(message_text.replace('set current player:', '').strip())
                         send_message('Current player is @%s' % player_map[current_player]['mention_name'])
+                    elif '(downvote)' in message_text and author = super_user:
+                        deleted_celeb = string.capwords(message_text.replace('(downvote)', '').strip())
+                        del_word(deleted_celeb)
 
             last_date = message['date']
         except:
