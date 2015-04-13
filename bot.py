@@ -176,7 +176,7 @@ if __name__ == '__main__':
                     elif 'set current player:' in message_text and author == super_user:
                         current_player = string.capwords(message_text.replace('set current player:', '').strip())
                         send_message('Current player is @%s' % player_map[current_player]['mention_name'])
-                    elif '(downvote)' in message_text and author = super_user:
+                    elif '(downvote)' in message_text and author == super_user:
                         deleted_celeb = string.capwords(message_text.replace('(downvote)', '').strip())
                         del_word(deleted_celeb)
 
