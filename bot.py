@@ -3,7 +3,6 @@
 import json
 import pymysql.cursors
 import signal
-import string
 import sys
 import traceback
 
@@ -74,8 +73,8 @@ if __name__ == '__main__':
     else:
         db_name = config['db_name']
         table_name = config['table_name']
-        player_list = config['player_list']
-        super_user = string.capwords(config['super_user'])
+        player_list = [player.lower() for player in config['player_list']]
+        super_user = config['super_user'].lower()
         hipchat = Hipster(config['api_key'])
         room_id = config['room_id']
 
@@ -95,8 +94,8 @@ if __name__ == '__main__':
     # create user map
     player_map = {}
     for user in users:
-        if user['name'] in player_list:
-            player_map[user['name']] = user
+        if user['name'].lower() in player_list:
+            player_map[user['name'].lower()] = user
 
     # say hi to chat! kind of shitty, but this needs to be here
     # so the bot doesn't ignore the first message
@@ -111,7 +110,7 @@ if __name__ == '__main__':
             for message in messages['data']['messages']:
                 if last_date is not None and message['date'] > last_date:
                     message_text = message['message'].lower()
-                    author = message['from']['name']
+                    author = message['from']['name'].lower()
                     if '(upvote)' in message_text and current_player == author:
                         celeb = message_text.replace('(upvote)', '').strip().split(' ')
                         celeb = ' '.join([word for word in celeb if '@' not in word])
@@ -120,7 +119,7 @@ if __name__ == '__main__':
                         order = -order
                         send_message('Order reversed')
                     elif 'set current player:' in message_text and author == super_user:
-                        current_player = string.capwords(message_text.replace('set current player:', '').strip())
+                        current_player = message_text.replace('set current player:', '').strip()
                         send_message('Current player is @%s' % player_map[current_player]['mention_name'])
 
             last_date = message['date']
