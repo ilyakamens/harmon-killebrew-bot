@@ -78,10 +78,11 @@ def del_word(celeb):
         if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
             send_message('%s was never said!' % celeb)
         elif str(e.args[0]) == '2006':
+            global connection
             connection = get_mysql_connection(db_name)
             return del_word(celeb)
         else:
-            send_message('Error %s: %s' % (e.args[0], e.args[1]))
+            send_message('Error %s' % (e))
     else:
         try:
             with connection.cursor() as cursor:
@@ -93,6 +94,7 @@ def del_word(celeb):
             if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
                 send_message('%s was never said!' % celeb)
             elif str(e.args[0]) == '2006':
+                global connection
                 connection = get_mysql_connection(db_name)
                 return del_word(celeb)
             else:
@@ -100,7 +102,7 @@ def del_word(celeb):
         else:
             player_index = player_list.index(author)
             current_player = player_list[player_index]
-            send_message('%s deleted. @%s is still up!' % (deleted_celeb, 
+            send_message('%s deleted. @%s is still up!' % (celeb, 
                                                            player_map[current_player]['mention_name']))
 
 
@@ -157,7 +159,7 @@ if __name__ == '__main__':
                     author = message['from']['name']
                     if '(upvote)' in message_text and current_player == author:
                         full_celeb = message_text.replace('(upvote)', '').strip().split(' ')
-                        full_celeb = ' '.join([word for word in celeb if '@' not in word])
+                        full_celeb = ' '.join([word for word in full_celeb if '@' not in word])
                         # eliminate double letters so celebrities can be written in 
                         # an announcer voice (e.g., HARRRMOONNNNN KILLLEBREEWWWWW) :)
                         celeb = ' '
@@ -183,7 +185,7 @@ if __name__ == '__main__':
                         for letter in full_deleted_celeb:
                             if letter == deleted_celeb[i]:
                                 pass
-                            else
+                            else:
                                 deleted_celeb += letter
                                 i += 1
                         deleted_celeb = deleted_celeb[1:]
@@ -194,4 +196,4 @@ if __name__ == '__main__':
             if 'messages' in locals():
                 pprint(messages)
             print traceback.format_exc()
-        sleep(10)
+        sleep(30)
