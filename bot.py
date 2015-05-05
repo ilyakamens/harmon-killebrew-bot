@@ -69,7 +69,7 @@ def del_word(celeb):
             cursor.execute(sql1, (celeb))
             row = cursor.fetchone()
             if (row):
-                author = row[1]
+                author = row['author']
             else:
                 send_message('%s was never said!' % celeb)
 
@@ -161,7 +161,7 @@ if __name__ == '__main__':
                         full_celeb = message_text.replace('(upvote)', '').strip().split(' ')
                         full_celeb = ' '.join([word for word in full_celeb if '@' not in word])
                         # eliminate double letters so celebrities can be written in 
-                        # an announcer voice (e.g., HARRRMOONNNNN KILLLEBREEWWWWW) :)
+                        # the Announcer Voice (e.g., HARRRMOONNNNN KILLLEBREEWWWWW) :)
                         celeb = ' '
                         i = 0
                         for letter in full_celeb:
