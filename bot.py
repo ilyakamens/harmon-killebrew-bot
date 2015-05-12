@@ -165,7 +165,7 @@ class HKBot:
                 if self.rejection_count >= 3:
                     self.send_message("SSSSHHHHOOOOOOOOTTTTTTTTTTTTT!!!!!!!!!!!!!!!!!")
             # connection to mysql was droppped; re-connect and try again
-            elif str(e.args[0]) == '2006':
+            elif str(e.args[0]) == '2006' or str(e.args[0]) == '2013':
                 self.connection = self.get_mysql_connection(self.db_name)
                 return self.add_word(celeb, author)
             else:
@@ -207,7 +207,7 @@ class HKBot:
             if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
                 self.send_message('%s was never said!' % celeb)
             # connection to mysql was droppped; re-connect and try again
-            elif str(e.args[0]) == '2006':
+            elif str(e.args[0]) == '2006' or str(e.args[0]) == '2013':
                 self.connection = self.get_mysql_connection(self.db_name)
                 return self.del_word(celeb)
             else:
@@ -223,7 +223,7 @@ class HKBot:
                 if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
                     self.send_message('%s was never said!' % celeb)
                 # connection to mysql was droppped; re-connect and try again
-                elif str(e.args[0]) == '2006':
+                elif str(e.args[0]) == '2006' or str(e.args[0]) == '2013':
                     self.connection = self.get_mysql_connection(self.db_name)
                     return self.del_word(celeb)
                 else:
