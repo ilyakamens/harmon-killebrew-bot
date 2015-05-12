@@ -103,7 +103,7 @@ class HKBot:
                             self.current_player = message_text.replace('set current player:', '').strip()
                             self.send_message('Current player is %s' % self._get_current_player_mention_name())
                         elif 'set current letter:' in message_text and author == self.super_user:
-                            self.self.current_letter = message_text.replace('set current letter:', '').strip()
+                            self.current_letter = message_text.replace('set current letter:', '').strip()
                             self.send_message('Current letter is "%s"' % self.current_letter)
                         elif '(downvote)' in message_text and author == self.super_user:
                             full_deleted_celeb = message_text.replace('(downvote)', '').strip()
