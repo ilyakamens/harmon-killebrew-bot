@@ -28,6 +28,11 @@ A simple bot for playing <a href="https://localwiki.org/davis/Harmon_Killebrew" 
 `config.json` specifies a super user, who has two commands at his/her disposal when written into the chat:
 - `reverse order` (switches the order the bot chooses players in)
 - `set current player: full_name` (sets full_name [e.g. Ilya Kamens] to be the current player)
+- `set current letter: some_letter` (sets current letter to some_letter)
+- `who's next` (makes bot say who the next player is)
+- `(downvote) submission` (removes submission from the mysql table and sets current player to whomever authored the submission)
+- `who's current` (makes bot say who the current player is)
+- `skip` skips current player
 
 ## Retroactive importing
 Maybe you've been playing this game for a bit and want an easy way to add a list of names to the DB that have already been used. No problem:
