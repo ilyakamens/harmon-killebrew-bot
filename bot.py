@@ -180,8 +180,7 @@ class HKBot:
                 else:
                     self.send_message('Error %s: %s' % (e.args[0], e.args[1]))
             else:
-                player_index = self.player_list.index(author)
-                self.current_player = self.player_list[player_index]
+                self.current_player = self.player_list[self.player_list.index(author)]
                 self.send_message('%s deleted. @%s is still up!' % (celeb,
                                                                     self.player_map[self.current_player]['mention_name']))
 
