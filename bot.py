@@ -43,6 +43,7 @@ class HKBot:
         self.order = 1
         self.current_player = self.super_user
         self.current_letter = 'k'
+        self.rejection_count = 0
 
         # connect to db
         self.connection = self.get_mysql_connection(self.db_name)
@@ -160,6 +161,9 @@ class HKBot:
             # celeb was already said
             if str(e.args[0]) == '1062':
                 self.send_message(random.choice(HKBot.rejections))
+                self.rejection_count += 1
+                if self.rejection_count >= 3:
+                    self.send_message("SSSSHHHHOOOOOOOOTTTTTTTTTTTTT!!!!!!!!!!!!!!!!!")
             # connection to mysql was droppped; re-connect and try again
             elif str(e.args[0]) == '2006':
                 self.connection = self.get_mysql_connection(self.db_name)
@@ -167,6 +171,7 @@ class HKBot:
             else:
                 self.send_message('Error %s: %s' % (e.args[0], e.args[1]))
         else:
+            self.rejection_count = 0
             split = celeb.split(' ', 1)
             dubdub_text = ''
             if len(split) > 1:
