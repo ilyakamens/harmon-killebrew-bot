@@ -27,6 +27,7 @@ class HKBot:
         self.room_id = config['room_id']
         self.order = 1
         self.current_player = self.super_user
+        self.current_letter = 'k'
 
         # connect to db
         self.connection = self.get_mysql_connection(self.db_name)
@@ -74,13 +75,20 @@ class HKBot:
                             #         i += 1
                             # celeb = celeb[1:]
                             # self.add_word(celeb, author)
-                            self.add_word(full_celeb, author)
+                            if full_celeb[0] == self.current_letter:
+                                self.add_word(full_celeb, author)
+                            else:
+                                self.send_message("that shit ain't right. your celeb started with '%s'"
+                                                  ", but needs to start with '%s'. ya dig?!" % (full_celeb[0], self.current_letter))
                         elif message_text == 'reverse order' and author == self.super_user:
                             self.order = -self.order
                             self.send_message('Order reversed')
                         elif 'set current player:' in message_text and author == self.super_user:
                             self.current_player = message_text.replace('set current player:', '').strip()
-                            self.send_message('Current player is @%s' % self._get_current_player_mention_name())
+                            self.send_message('Current player is %s' % self._get_current_player_mention_name())
+                        elif 'set current letter:' in message_text and author == self.super_user:
+                            self.self.current_letter = message_text.replace('set current letter:', '').strip()
+                            self.send_message('Current letter is "%s"' % self.current_letter)
                         elif '(downvote)' in message_text and author == self.super_user:
                             full_deleted_celeb = message_text.replace('(downvote)', '').strip()
                             # deleted_celeb = ' '
@@ -146,15 +154,21 @@ class HKBot:
         else:
             split = celeb.split(' ', 1)
             dubdub_text = ''
-            if len(split) > 1 and split[0][0] == split[1][0]:
-                self.order = -self.order
-                dubdub_text = 'DUB DUB! '
+            if len(split) > 1:
+                if split[0][0] == split[1][0]:
+                    self.order = -self.order
+                    dubdub_text = 'DUB DUB! '
+                self.current_letter = split[1][0]
+            else:
+                self.current_letter = celeb[-1]
             self.current_player = self._get_next_player_name()
-            self.send_message('%s"%s" said by %s on %s. Next player is @%s!' % (dubdub_text,
-                                                                                celeb,
-                                                                                author,
-                                                                                str(date.today()),
-                                                                                self._get_current_player_mention_name()))
+            self.send_message('%s"%s" said by %s on %s. Next player is %s!'
+                              ' and the next letter is "%s" (yabishes)!!!!' % (dubdub_text,
+                                                                               celeb,
+                                                                               author,
+                                                                               str(date.today()),
+                                                                               self._get_current_player_mention_name(),
+                                                                               self.current_letter))
 
     def del_word(self, celeb):
         author = None
@@ -196,8 +210,8 @@ class HKBot:
                     self.send_message('Error %s: %s' % (e.args[0], e.args[1]))
             else:
                 self.current_player = self.player_list[self.player_list.index(author)]
-                self.send_message('%s deleted. @%s is still up!' % (celeb,
-                                                                    self._get_current_player_mention_name()))
+                self.send_message('%s deleted. %s is still up!' % (celeb,
+                                                                   self._get_current_player_mention_name()))
 
     # terminate process
     def terminate(self, signum, frame):
