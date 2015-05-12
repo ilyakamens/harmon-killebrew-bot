@@ -117,7 +117,7 @@ class HKBot:
         self.hipchat.send_messages(room_id=self.room_id, message=text, message_format='text', sender='killebrew_bot')
 
     def _get_current_player_mention_name(self):
-        return self.player_map[self.current_player]['mention_name']
+        return '@' + self.player_map[self.current_player]['mention_name']
 
     def _get_next_player_name(self):
         next_player_index = (self.player_list.index(self.current_player) + self.order) % len(self.player_list)
