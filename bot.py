@@ -2,6 +2,7 @@
 
 import json
 import pymysql.cursors
+import random
 import signal
 import sys
 import traceback
@@ -12,6 +13,20 @@ from pprint import pprint
 from time import sleep
 
 class HKBot:
+    rejections = [
+        "hi, this is the rejection hotline -- how may i help you?",
+        "LOL. no.",
+        "are you fucking kidding me? try again",
+        "phone in harder. seriously.",
+        "oh did you forget that name's been said like 50 times?",
+        "nonono, you're supposed to say names that HAVEN'T been said",
+        "you and goldfish have a lot in common. especially in the short term memory area.",
+        "are you smoking crack?",
+        "hmmm... i can't remember if that was said already. oh, wait, i can cause i'm a motherfucking robot. go fish.",
+        "i feel like you're doing this on purpose. try again. ohbut this time get it right.",
+        "lololololzzzzzzzzzzzzzzzzzzzz u so fun-knee (fail)"
+    ]
+
     def __init__(self):
         # load json config
         try:
@@ -144,7 +159,7 @@ class HKBot:
         except Exception as e:
             # celeb was already said
             if str(e.args[0]) == '1062':
-                self.send_message('No!')
+                self.send_message(random.choice(HKBot.rejections))
             # connection to mysql was droppped; re-connect and try again
             elif str(e.args[0]) == '2006':
                 self.connection = self.get_mysql_connection(self.db_name)
