@@ -121,8 +121,10 @@ class HKBot:
 
             self.connection.commit()
         except Exception as e:
+            # celeb was already said
             if str(e.args[0]) == '1062':
                 self.send_message('No!')
+            # connection to mysql was droppped; re-connect and try again
             elif str(e.args[0]) == '2006':
                 self.connection = self.get_mysql_connection(self.db_name)
                 return self.add_word(celeb, author)
@@ -159,6 +161,7 @@ class HKBot:
         except Exception as e:
             if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
                 self.send_message('%s was never said!' % celeb)
+            # connection to mysql was droppped; re-connect and try again
             elif str(e.args[0]) == '2006':
                 self.connection = self.get_mysql_connection(self.db_name)
                 return self.del_word(celeb)
@@ -174,6 +177,7 @@ class HKBot:
             except Exception as e:
                 if str(e.args[0]) == 'xxxx': # would this be an error? where the row we want to delete does not exist?
                     self.send_message('%s was never said!' % celeb)
+                # connection to mysql was droppped; re-connect and try again
                 elif str(e.args[0]) == '2006':
                     self.connection = self.get_mysql_connection(self.db_name)
                     return self.del_word(celeb)
