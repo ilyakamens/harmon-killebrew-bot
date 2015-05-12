@@ -96,6 +96,8 @@ class HKBot:
                             self.del_word(full_deleted_celeb)
                         elif message_text == "who's next" and author == self.super_user:
                             self.send_message(self._get_next_player_name() + '. fresh like uhhh')
+                        elif message_text == "who's current" and author == self.super_user:
+                            self.send_message(self._get_current_player_mention_name() + ' is the current player. lez goooo')
                         elif message_text == "skip" and author == self.super_user:
                             self.current_player = self._get_next_player_name()
                             self.send_message('too slow bro. current player isssssss %s' % self._get_current_player_mention_name())
