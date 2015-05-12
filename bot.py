@@ -94,7 +94,8 @@ class HKBot:
                             # deleted_celeb = deleted_celeb[1:]
                             # self.del_word(deleted_celeb)
                             self.del_word(full_deleted_celeb)
-
+                        elif message_text == "who's next" and author == self.super_user:
+                            self.send_message(self._get_next_player_name() + '. fresh like uhhh')
                 last_date = message['date']
             except:
                 if 'messages' in locals():
@@ -115,9 +116,9 @@ class HKBot:
     def _get_current_player_mention_name(self):
         return self.player_map[self.current_player]['mention_name']
 
-    def _advance_current_player(self):
+    def _get_next_player_name(self):
         next_player_index = (self.player_list.index(self.current_player) + self.order) % len(self.player_list)
-        self.current_player = self.player_list[next_player_index]
+        return self.player_list[next_player_index]
 
     def add_word(self, celeb, author):
         try:
@@ -143,7 +144,7 @@ class HKBot:
             if len(split) > 1 and split[0][0] == split[1][0]:
                 self.order = -self.order
                 dubdub_text = 'DUB DUB! '
-            self._advance_current_player()
+            self.current_player = self._get_next_player_name()
             self.send_message('%s"%s" said by %s on %s. Next player is @%s!' % (dubdub_text,
                                                                                 celeb,
                                                                                 author,
