@@ -26,7 +26,7 @@ class HKBot:
         self.hipchat = Hipster(config['api_key'])
         self.room_id = config['room_id']
         self.order = 1
-        self.current_player = None
+        self.current_player = self.super_user
 
         # connect to db
         self.connection = self.get_mysql_connection(self.db_name)
