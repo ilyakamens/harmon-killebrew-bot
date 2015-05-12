@@ -229,9 +229,12 @@ class HKBot:
                 else:
                     self.send_message('Error %s: %s' % (e.args[0], e.args[1]))
             else:
+                self.current_letter = celeb[0]
                 self.current_player = self.player_list[self.player_list.index(author)]
-                self.send_message('%s deleted. %s is still up!' % (celeb,
-                                                                   self._get_current_player_mention_name()))
+                self.send_message('%s deleted. %s is still up and'
+                                  'current letter is still "%s"!' % (celeb,
+                                                                     self._get_current_player_mention_name(),
+                                                                     self.current_letter))
 
     # terminate process
     def terminate(self, signum, frame):
