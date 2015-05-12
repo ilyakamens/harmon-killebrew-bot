@@ -202,6 +202,6 @@ class HKBot:
 
 if __name__ == '__main__':
     bot = HKBot()
-    bot.start()
     signal.signal(signal.SIGTERM, bot.terminate)
     signal.signal(signal.SIGINT, bot.terminate)
+    bot.start()
