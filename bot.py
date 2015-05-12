@@ -80,7 +80,7 @@ class HKBot:
                             self.send_message('Order reversed')
                         elif 'set current player:' in message_text and author == self.super_user:
                             self.current_player = message_text.replace('set current player:', '').strip()
-                            self.send_message('Current player is @%s' % self.player_map[self.current_player]['mention_name'])
+                            self.send_message('Current player is @%s' % self._get_current_player_mention_name())
                         elif '(downvote)' in message_text and author == self.super_user:
                             full_deleted_celeb = message_text.replace('(downvote)', '').strip()
                             # deleted_celeb = ' '
@@ -111,6 +111,9 @@ class HKBot:
 
     def send_message(self, text):
         self.hipchat.send_messages(room_id=self.room_id, message=text, message_format='text', sender='killebrew_bot')
+
+    def _get_current_player_mention_name(self):
+        return self.player_map[self.current_player]['mention_name']
 
     def add_word(self, celeb, author):
         try:
@@ -143,7 +146,7 @@ class HKBot:
                                                                                 celeb,
                                                                                 author,
                                                                                 str(date.today()),
-                                                                                self.player_map[self.current_player]['mention_name']))
+                                                                                self._get_current_player_mention_name()))
 
     def del_word(self, celeb):
         author = None
@@ -186,7 +189,7 @@ class HKBot:
             else:
                 self.current_player = self.player_list[self.player_list.index(author)]
                 self.send_message('%s deleted. @%s is still up!' % (celeb,
-                                                                    self.player_map[self.current_player]['mention_name']))
+                                                                    self._get_current_player_mention_name()))
 
     # terminate process
     def terminate(self, signum, frame):
