@@ -115,6 +115,10 @@ class HKBot:
     def _get_current_player_mention_name(self):
         return self.player_map[self.current_player]['mention_name']
 
+    def _advance_current_player(self):
+        next_player_index = (self.player_list.index(self.current_player) + self.order) % len(self.player_list)
+        self.current_player = self.player_list[next_player_index]
+
     def add_word(self, celeb, author):
         try:
             with self.connection.cursor() as cursor:
@@ -139,9 +143,7 @@ class HKBot:
             if len(split) > 1 and split[0][0] == split[1][0]:
                 self.order = -self.order
                 dubdub_text = 'DUB DUB! '
-
-            next_player_index = (self.player_list.index(author) + self.order) % len(self.player_list)
-            self.current_player = self.player_list[next_player_index]
+            self._advance_current_player()
             self.send_message('%s"%s" said by %s on %s. Next player is @%s!' % (dubdub_text,
                                                                                 celeb,
                                                                                 author,
