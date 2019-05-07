@@ -39,3 +39,4 @@ Maybe you've been playing this game for a bit and want an easy way to add a list
 - create a file with one name per line (e.g. `names.txt`)
 - `python import.py names.txt`
 - if you do this, know that the `author` will be `IMPORT` and `authored` will be the current date
+- Maruya
